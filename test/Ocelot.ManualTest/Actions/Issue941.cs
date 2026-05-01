@@ -116,11 +116,27 @@ public class Issue941
 
         Console.WriteLine("Running negative test (buffering check)...");
         await page.EvaluateAsync("runNegativeTest()");
-        
-        // Wait a bit for the negative test result to appear in the UI
-        await Task.Delay(3000);
 
-        Console.WriteLine("\nTests completed! Close the browser window or press any key to exit...");
+        // Wait for results and display them in console
+        string sseStatus = "pending";
+        string bufferingStatus = "pending";
+
+        for (int i = 0; i < 10; i++)
+        {
+            sseStatus = await page.EvaluateAsync<string>("window.testStatus.sse");
+            bufferingStatus = await page.EvaluateAsync<string>("window.testStatus.buffering");
+            if (sseStatus != "pending" && bufferingStatus != "pending") break;
+            await Task.Delay(1000);
+        }
+
+        Console.WriteLine("\n" + new string('=', 30));
+        Console.WriteLine("    BROWSER TEST RESULTS");
+        Console.WriteLine(new string('=', 30));
+        Console.WriteLine($"SSE Transport: {(sseStatus == "success" ? "✅ OK" : "❌ FAILED")}");
+        Console.WriteLine($"Buffering:     {(bufferingStatus == "success" ? "✅ OK" : "❌ FAILED")}");
+        Console.WriteLine(new string('=', 30) + "\n");
+
+        Console.WriteLine("Tests completed! Close the browser window or press any key to exit...");
         
         try 
         {

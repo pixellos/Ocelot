@@ -29,6 +29,11 @@
     <div id='negative-log'></div>
 
     <script>
+        window.testStatus = {
+            sse: 'pending',
+            buffering: 'pending'
+        };
+
         function logMessage(msg, className) {
             const d = document.createElement('div');
             d.textContent = new Date().toLocaleTimeString() + ' - ' + msg;
@@ -52,8 +57,14 @@
             });
             
             connection.start()
-                .then(() => logMessage('Connection started successfully!', 'success'))
-                .catch(err => logMessage('Error: ' + err.toString(), 'error'));
+                .then(() => {
+                    logMessage('Connection started successfully!', 'success');
+                    window.testStatus.sse = 'success';
+                })
+                .catch(err => {
+                    logMessage('Error: ' + err.toString(), 'error');
+                    window.testStatus.sse = 'failure';
+                });
         }
 
         async function runNegativeTest() {
@@ -70,8 +81,10 @@
                 log.innerHTML += 'Duration: ' + duration + 'ms<br>';
                 if (duration > 1800) {
                     log.innerHTML += '<b class="success">PASSED: Response was buffered (delayed by downstream).</b>';
+                    window.testStatus.buffering = 'success';
                 } else {
                     log.innerHTML += '<b class="error">FAILED: Response was NOT buffered (arrived too fast).</b>';
+                    window.testStatus.buffering = 'failure';
                 }
             } catch (err) {
                 log.innerHTML += '<b class="error">Error: ' + err.message + '</b>';
