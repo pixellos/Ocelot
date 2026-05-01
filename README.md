@@ -2,7 +2,7 @@
 
 [![Release Status](https://github.com/ThreeMammals/Ocelot/actions/workflows/release.yml/badge.svg)](https://github.com/ThreeMammals/Ocelot/actions/workflows/release.yml)
 [![Development Status](https://github.com/ThreeMammals/Ocelot/actions/workflows/develop.yml/badge.svg)](https://github.com/ThreeMammals/Ocelot/actions/workflows/develop.yml)
-[![ReadTheDocs][~docspassing]](https://app.readthedocs.org/projects/ocelot/builds/?version__slug=develop)
+[![ReadTheDocs](https://readthedocs.org/projects/ocelot/badge/?version=develop&style=flat-square)](https://app.readthedocs.org/projects/ocelot/builds/?version__slug=develop)
 [![coveralls](https://img.shields.io/coveralls/github/ThreeMammals/Ocelot/develop?label=coveralls&logo=coveralls&logoColor=white)](https://coveralls.io/github/ThreeMammals/Ocelot?branch=develop)
 [![codecov](https://codecov.io/gh/ThreeMammals/Ocelot/branch/develop/graph/badge.svg)](https://codecov.io/gh/ThreeMammals/Ocelot)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/ThreeMammals/Ocelot/blob/main/LICENSE.md)
