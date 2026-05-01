@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Playwright;
+
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Testing;
@@ -32,8 +32,12 @@ public class Issue941
         downstreamApp.MapGet("/sse-plain", async (HttpContext ctx) =>
         {
             ctx.Response.ContentType = "text/event-stream";
-            await ctx.Response.WriteAsync("data: event1\n\n");
-            await ctx.Response.Body.FlushAsync();
+            for (int i = 1; i <= 3; i++)
+            {
+                await ctx.Response.WriteAsync($"data: plain-event-{i}\n\n");
+                await ctx.Response.Body.FlushAsync();
+                await Task.Delay(1000);
+            }
         });
         downstreamApp.MapGet("/not-sse", async (HttpContext ctx) =>
         {
@@ -87,56 +91,34 @@ public class Issue941
         await gatewayApp.StartAsync();
         Console.WriteLine($"Ocelot Gateway started on port {ocelotPort}");
 
-        // Start Playwright
-        Console.WriteLine("Launching Chromium browser (headed mode)...");
-        using var playwright = await Playwright.CreateAsync();
-        await using var browser = await playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions { Headless = false, SlowMo = 50 });
-        var page = await browser.NewPageAsync();
-
+        // Prepare HTML for manual opening
         string htmlPath = Path.Combine("Tests", "Issue941.html");
         if (!File.Exists(htmlPath)) htmlPath = Path.Combine("test", "Ocelot.ManualTest", "Tests", "Issue941.html");
         
         var html = await File.ReadAllTextAsync(htmlPath);
         html = html.Replace("{{OCELOT_PORT}}", ocelotPort.ToString());
+        
+        string tempHtmlPath = Path.Combine(Directory.GetCurrentDirectory(), "OcelotSSETest.html");
+        await File.WriteAllTextAsync(tempHtmlPath, html);
 
-        await page.SetContentAsync(html);
-        await page.EvaluateAsync("startConnection()");
-
-        Console.WriteLine("Browser launched and connected to SignalR Hub.");
-        Console.WriteLine("Sending test messages from downstream hub...");
+        Console.WriteLine("\n" + new string('*', 60));
+        Console.WriteLine("           MANUAL VERIFICATION REQUIRED");
+        Console.WriteLine(new string('*', 60));
+        Console.WriteLine($"1. Open your browser and navigate to:");
+        Console.WriteLine($"   file:///{tempHtmlPath.Replace("\\", "/")}");
+        Console.WriteLine($"2. Verification (SignalR SSE, Plain SSE, Buffering) will start automatically.");
+        Console.WriteLine(new string('*', 60) + "\n");
 
         var hub = downstreamApp.Services.GetRequiredService<IHubContext<SseHub>>();
-        
-        // Send a few messages with delay to see them appear
-        for (int i = 1; i <= 3; i++)
-        {
-            await Task.Delay(1000);
-            await hub.Clients.All.SendAsync("ReceiveMessage", $"Hello from Ocelot message #{i}!");
-        }
+        _ = Task.Run(async () => {
+            int i = 1;
+            while(true) {
+                await Task.Delay(2000);
+                await hub.Clients.All.SendAsync("ReceiveMessage", $"Hello from Ocelot message #{i++}!");
+            }
+        });
 
-        Console.WriteLine("Running negative test (buffering check)...");
-        await page.EvaluateAsync("runNegativeTest()");
-
-        // Wait for results and display them in console
-        string sseStatus = "pending";
-        string bufferingStatus = "pending";
-
-        for (int i = 0; i < 10; i++)
-        {
-            sseStatus = await page.EvaluateAsync<string>("window.testStatus.sse");
-            bufferingStatus = await page.EvaluateAsync<string>("window.testStatus.buffering");
-            if (sseStatus != "pending" && bufferingStatus != "pending") break;
-            await Task.Delay(1000);
-        }
-
-        Console.WriteLine("\n" + new string('=', 30));
-        Console.WriteLine("    BROWSER TEST RESULTS");
-        Console.WriteLine(new string('=', 30));
-        Console.WriteLine($"SSE Transport: {(sseStatus == "success" ? "✅ OK" : "❌ FAILED")}");
-        Console.WriteLine($"Buffering:     {(bufferingStatus == "success" ? "✅ OK" : "❌ FAILED")}");
-        Console.WriteLine(new string('=', 30) + "\n");
-
-        Console.WriteLine("Tests completed! Close the browser window or press any key to exit...");
+        Console.WriteLine("Tests running! Press any key to exit and stop servers...");
         
         try 
         {
@@ -147,10 +129,10 @@ public class Issue941
         }
         catch 
         {
-            await Task.Delay(5000);
+            await Task.Delay(60000); // Wait 1 minute if non-interactive
         }
 
-        await browser.CloseAsync();
+        if (File.Exists(tempHtmlPath)) File.Delete(tempHtmlPath);
         await gatewayApp.StopAsync();
         await downstreamApp.StopAsync();
     }

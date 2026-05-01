@@ -10,7 +10,7 @@ do
     Console.Write(@"What are you going to do?
   1. Run Ocelot with basic setup (default)
   2. Run Ocelot manual tests
-  3. Run Playwright SSE manual tests
+  3. Run SSE manual tests (Browser Verification)
 So, press 1, 2 or 3 > ");
     ConsoleKeyInfo info = Console.ReadKey(true);
     if (info.Key == ConsoleKey.D2)

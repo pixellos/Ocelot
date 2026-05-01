@@ -73,8 +73,7 @@ public class ServerSentEventsTests : Steps
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         response = await ocelotClient.SendAsync(request, System.Net.Http.HttpCompletionOption.ResponseHeadersRead);
 
-        System.IO.File.AppendAllText("test-debug.log", $"Response StatusCode: {response.StatusCode}\n");
-        System.IO.File.AppendAllText("test-debug.log", $"Response Content-Type: {response.Content.Headers.ContentType}\n");
+
 
         if (response.IsSuccessStatusCode)
         {
@@ -84,7 +83,7 @@ public class ServerSentEventsTests : Steps
             while (true)
             {
                 var line = await reader.ReadLineAsync();
-                System.IO.File.AppendAllText("test-debug.log", $"Read line: '{line}'\n");
+
                 if (line == null) break;
                 if (!string.IsNullOrEmpty(line))
                 {

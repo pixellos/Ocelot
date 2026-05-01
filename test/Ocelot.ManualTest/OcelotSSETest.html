@@ -16,7 +16,7 @@
     
     <div>
         <label>Hub URL:</label>
-        <input type="text" id="hubUrl" value="http://localhost:{{OCELOT_PORT}}/proxy/testhub" size="40" />
+        <input type="text" id="hubUrl" value="http://localhost:24322/proxy/testhub" size="40" />
         <button onclick="startConnection()">Connect</button>
     </div>
 
@@ -73,7 +73,7 @@
         }
 
         function startPlainSse() {
-            const url = 'http://localhost:{{OCELOT_PORT}}/proxy/sse-plain';
+            const url = 'http://localhost:24322/proxy/sse-plain';
             const log = document.getElementById('plain-log');
             log.innerHTML = 'Connecting to ' + url + '...<br>';
             
@@ -100,7 +100,7 @@
         }
 
         async function runNegativeTest() {
-            const url = 'http://localhost:{{OCELOT_PORT}}/proxy/not-sse';
+            const url = 'http://localhost:24322/proxy/not-sse';
             const log = document.getElementById('negative-log');
             log.innerHTML = 'Testing buffering (requesting ' + url + ')...<br>';
             const start = Date.now();
