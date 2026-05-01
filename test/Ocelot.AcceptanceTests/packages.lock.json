@@ -148,16 +148,6 @@
           "Microsoft.TestPlatform.TestHost": "18.3.0"
         }
       },
-      "Microsoft.Playwright": {
-        "type": "Direct",
-        "requested": "[1.43.0, )",
-        "resolved": "1.43.0",
-        "contentHash": "FvY6w9duxWBXe3gV6MSqvUcdF9daSBfDVUrYKcr4Fyro0nbiCf4hQUsPxx+CJ3P8PtSrzC675oU14qGzcrGNJw==",
-        "dependencies": {
-          "Microsoft.Bcl.AsyncInterfaces": "6.0.0",
-          "System.ComponentModel.Annotations": "5.0.0"
-        }
-      },
       "Serilog": {
         "type": "Direct",
         "requested": "[4.3.1, )",
@@ -761,11 +751,6 @@
         "resolved": "6.0.0",
         "contentHash": "CPc6tWO1LAer3IzfZufDBRL+UZQcj5uS207NHALQzP84Vp/z6wF0Aa0YZImOQY8iStY0A2zI/e3ihKNPfUm8XA=="
       },
-      "System.ComponentModel.Annotations": {
-        "type": "Transitive",
-        "resolved": "5.0.0",
-        "contentHash": "dMkqfy2el8A8/I76n2Hi1oBFEbG1SfxD2l5nhwXV3XjlnOmwxJlQbYpJH4W51odnU9sARCSAgv7S3CyAFMkpYg=="
-      },
       "System.Diagnostics.EventLog": {
         "type": "Transitive",
         "resolved": "6.0.0",
@@ -870,7 +855,7 @@
         "type": "Project",
         "dependencies": {
           "Consul": "[1.7.14.10, )",
-          "Ocelot": "[0.0.0-dev, )"
+          "Ocelot": "[25.0.0-sse-support.1, )"
         }
       },
       "ocelot.provider.kubernetes": {
@@ -878,7 +863,7 @@
         "dependencies": {
           "KubeClient": "[3.1.1, )",
           "KubeClient.Extensions.DependencyInjection": "[3.1.1, )",
-          "Ocelot": "[0.0.0-dev, )"
+          "Ocelot": "[25.0.0-sse-support.1, )"
         }
       },
       "ocelot.testing": {
@@ -888,28 +873,8 @@
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "[10.0.5, )",
           "Microsoft.AspNetCore.TestHost": "[10.0.5, )",
           "Moq": "[4.20.72, )",
-          "Ocelot": "[0.0.0-dev, )",
+          "Ocelot": "[25.0.0-sse-support.1, )",
           "Shouldly": "[4.3.0, )"
-        }
-      }
-    },
-    "net10.0/linux-x64": {
-      "Microsoft.Win32.Registry": {
-        "type": "Transitive",
-        "resolved": "5.0.0",
-        "contentHash": "dDoKi0PnDz31yAyETfRntsLArTlVAVzUzCIvvEDsDsucrl33Dl8pIJG06ePTJTI3tGpeyHS9Cq7Foc/s4EeKcg=="
-      },
-      "System.Diagnostics.EventLog": {
-        "type": "Transitive",
-        "resolved": "6.0.0",
-        "contentHash": "lcyUiXTsETK2ALsZrX+nWuHSIQeazhqPphLfaRxzdGaG93+0kELqpgEHtwWOlQe7+jSFnKwaCAgL4kjeZCQJnw=="
-      },
-      "System.Management": {
-        "type": "Transitive",
-        "resolved": "6.0.1",
-        "contentHash": "10J1D0h/lioojphfJ4Fuh5ZUThT/xOVHdV9roGBittKKNP2PMjrvibEdbVTGZcPra1399Ja3tqIJLyQrc5Wmhg==",
-        "dependencies": {
-          "System.CodeDom": "6.0.0"
         }
       }
     },
@@ -1103,15 +1068,6 @@
         "dependencies": {
           "Microsoft.CodeCoverage": "18.3.0",
           "Microsoft.TestPlatform.TestHost": "18.3.0"
-        }
-      },
-      "Microsoft.Playwright": {
-        "type": "Direct",
-        "requested": "[1.43.0, )",
-        "resolved": "1.43.0",
-        "contentHash": "FvY6w9duxWBXe3gV6MSqvUcdF9daSBfDVUrYKcr4Fyro0nbiCf4hQUsPxx+CJ3P8PtSrzC675oU14qGzcrGNJw==",
-        "dependencies": {
-          "Microsoft.Bcl.AsyncInterfaces": "6.0.0"
         }
       },
       "Serilog": {
@@ -1853,7 +1809,7 @@
         "type": "Project",
         "dependencies": {
           "Consul": "[1.7.14.10, )",
-          "Ocelot": "[0.0.0-dev, )"
+          "Ocelot": "[25.0.0-sse-support.1, )"
         }
       },
       "ocelot.provider.kubernetes": {
@@ -1861,7 +1817,7 @@
         "dependencies": {
           "KubeClient": "[3.1.1, )",
           "KubeClient.Extensions.DependencyInjection": "[3.1.1, )",
-          "Ocelot": "[0.0.0-dev, )"
+          "Ocelot": "[25.0.0-sse-support.1, )"
         }
       },
       "ocelot.testing": {
@@ -1871,35 +1827,10 @@
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "[8.0.25, )",
           "Microsoft.AspNetCore.TestHost": "[8.0.25, )",
           "Moq": "[4.20.72, )",
-          "Ocelot": "[0.0.0-dev, )",
+          "Ocelot": "[25.0.0-sse-support.1, )",
           "Shouldly": "[4.3.0, )",
           "System.Text.Json": "[10.0.5, )"
         }
-      }
-    },
-    "net8.0/linux-x64": {
-      "Microsoft.Win32.Registry": {
-        "type": "Transitive",
-        "resolved": "5.0.0",
-        "contentHash": "dDoKi0PnDz31yAyETfRntsLArTlVAVzUzCIvvEDsDsucrl33Dl8pIJG06ePTJTI3tGpeyHS9Cq7Foc/s4EeKcg=="
-      },
-      "System.Diagnostics.EventLog": {
-        "type": "Transitive",
-        "resolved": "6.0.0",
-        "contentHash": "lcyUiXTsETK2ALsZrX+nWuHSIQeazhqPphLfaRxzdGaG93+0kELqpgEHtwWOlQe7+jSFnKwaCAgL4kjeZCQJnw=="
-      },
-      "System.Management": {
-        "type": "Transitive",
-        "resolved": "6.0.1",
-        "contentHash": "10J1D0h/lioojphfJ4Fuh5ZUThT/xOVHdV9roGBittKKNP2PMjrvibEdbVTGZcPra1399Ja3tqIJLyQrc5Wmhg==",
-        "dependencies": {
-          "System.CodeDom": "6.0.0"
-        }
-      },
-      "System.Text.Encodings.Web": {
-        "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "opvD/nKTzGKA7GVntZ9L823kN6IxgHQfuxY+VI9gv8VE1Y7CSKoi/QS1EYDQiA63MqtZsD7X6zkISd2ZQJohTQ=="
       }
     },
     "net8.0/osx-x64": {
@@ -2099,15 +2030,6 @@
         "dependencies": {
           "Microsoft.CodeCoverage": "18.3.0",
           "Microsoft.TestPlatform.TestHost": "18.3.0"
-        }
-      },
-      "Microsoft.Playwright": {
-        "type": "Direct",
-        "requested": "[1.43.0, )",
-        "resolved": "1.43.0",
-        "contentHash": "FvY6w9duxWBXe3gV6MSqvUcdF9daSBfDVUrYKcr4Fyro0nbiCf4hQUsPxx+CJ3P8PtSrzC675oU14qGzcrGNJw==",
-        "dependencies": {
-          "Microsoft.Bcl.AsyncInterfaces": "6.0.0"
         }
       },
       "Serilog": {
@@ -2847,7 +2769,7 @@
         "type": "Project",
         "dependencies": {
           "Consul": "[1.7.14.10, )",
-          "Ocelot": "[0.0.0-dev, )"
+          "Ocelot": "[25.0.0-sse-support.1, )"
         }
       },
       "ocelot.provider.kubernetes": {
@@ -2855,7 +2777,7 @@
         "dependencies": {
           "KubeClient": "[3.1.1, )",
           "KubeClient.Extensions.DependencyInjection": "[3.1.1, )",
-          "Ocelot": "[0.0.0-dev, )"
+          "Ocelot": "[25.0.0-sse-support.1, )"
         }
       },
       "ocelot.testing": {
@@ -2865,35 +2787,10 @@
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "[9.0.14, )",
           "Microsoft.AspNetCore.TestHost": "[9.0.14, )",
           "Moq": "[4.20.72, )",
-          "Ocelot": "[0.0.0-dev, )",
+          "Ocelot": "[25.0.0-sse-support.1, )",
           "Shouldly": "[4.3.0, )",
           "System.Text.Json": "[10.0.5, )"
         }
-      }
-    },
-    "net9.0/linux-x64": {
-      "Microsoft.Win32.Registry": {
-        "type": "Transitive",
-        "resolved": "5.0.0",
-        "contentHash": "dDoKi0PnDz31yAyETfRntsLArTlVAVzUzCIvvEDsDsucrl33Dl8pIJG06ePTJTI3tGpeyHS9Cq7Foc/s4EeKcg=="
-      },
-      "System.Diagnostics.EventLog": {
-        "type": "Transitive",
-        "resolved": "6.0.0",
-        "contentHash": "lcyUiXTsETK2ALsZrX+nWuHSIQeazhqPphLfaRxzdGaG93+0kELqpgEHtwWOlQe7+jSFnKwaCAgL4kjeZCQJnw=="
-      },
-      "System.Management": {
-        "type": "Transitive",
-        "resolved": "6.0.1",
-        "contentHash": "10J1D0h/lioojphfJ4Fuh5ZUThT/xOVHdV9roGBittKKNP2PMjrvibEdbVTGZcPra1399Ja3tqIJLyQrc5Wmhg==",
-        "dependencies": {
-          "System.CodeDom": "6.0.0"
-        }
-      },
-      "System.Text.Encodings.Web": {
-        "type": "Transitive",
-        "resolved": "10.0.5",
-        "contentHash": "opvD/nKTzGKA7GVntZ9L823kN6IxgHQfuxY+VI9gv8VE1Y7CSKoi/QS1EYDQiA63MqtZsD7X6zkISd2ZQJohTQ=="
       }
     },
     "net9.0/osx-x64": {

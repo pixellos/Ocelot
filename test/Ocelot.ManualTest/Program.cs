@@ -1,4 +1,4 @@
-﻿using Ocelot.ManualTest.Actions;
+using Ocelot.ManualTest.Actions;
 using System.Reflection;
 
 var nl = Environment.NewLine;
@@ -10,12 +10,18 @@ do
     Console.Write(@"What are you going to do?
   1. Run Ocelot with basic setup (default)
   2. Run Ocelot manual tests
-So, press 1 or 2 > ");
+  3. Run Playwright SSE manual tests
+So, press 1, 2 or 3 > ");
     ConsoleKeyInfo info = Console.ReadKey(true);
     if (info.Key == ConsoleKey.D2)
     {
         Console.WriteLine((char)info.Key);
         ManualTests.Run(args);
+    }
+    else if (info.Key == ConsoleKey.D3)
+    {
+        Console.WriteLine((char)info.Key);
+        await Issue941.RunAsync(args);
     }
     else
     {

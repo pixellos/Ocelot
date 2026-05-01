@@ -6,7 +6,7 @@
     <NoPackageAnalysis>true</NoPackageAnalysis>
     <Product>Ocelot Gateway</Product>
     <Description>Provides Ocelot extensions to use Kubernetes service discovery.</Description>
-    <VersionPrefix>0.0.0-dev</VersionPrefix>
+    <VersionPrefix>25.0.0-sse-support.1</VersionPrefix>
     <PackageId>Ocelot.Provider.Kubernetes</PackageId>
     <PackageTags>API Gateway;.NET;kubernetes</PackageTags>
     <PackageProjectUrl>https://github.com/ThreeMammals/Ocelot/tree/main/src/Ocelot.Provider.Kubernetes</PackageProjectUrl>

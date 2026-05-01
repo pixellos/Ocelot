@@ -494,7 +494,7 @@
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "[10.0.5, )",
           "Microsoft.AspNetCore.TestHost": "[10.0.5, )",
           "Moq": "[4.20.72, )",
-          "Ocelot": "[0.0.0-dev, )",
+          "Ocelot": "[25.0.0-sse-support.1, )",
           "Shouldly": "[4.3.0, )"
         }
       }
@@ -1077,7 +1077,7 @@
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "[8.0.25, )",
           "Microsoft.AspNetCore.TestHost": "[8.0.25, )",
           "Moq": "[4.20.72, )",
-          "Ocelot": "[0.0.0-dev, )",
+          "Ocelot": "[25.0.0-sse-support.1, )",
           "Shouldly": "[4.3.0, )",
           "System.Text.Json": "[10.0.5, )"
         }
@@ -1650,7 +1650,7 @@
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "[9.0.14, )",
           "Microsoft.AspNetCore.TestHost": "[9.0.14, )",
           "Moq": "[4.20.72, )",
-          "Ocelot": "[0.0.0-dev, )",
+          "Ocelot": "[25.0.0-sse-support.1, )",
           "Shouldly": "[4.3.0, )",
           "System.Text.Json": "[10.0.5, )"
         }

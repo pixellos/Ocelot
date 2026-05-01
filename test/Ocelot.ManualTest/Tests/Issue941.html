@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SSE SignalR Manual Test</title>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js'></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        #log, #negative-log { margin-top: 20px; border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; background: #f9f9f9; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>SignalR over SSE Test</h1>
+    <p>This page tests the Server-Sent Events transport via Ocelot Gateway. Ensure Ocelot and the downstream SignalR hub are running.</p>
+    
+    <div>
+        <label>Hub URL:</label>
+        <input type="text" id="hubUrl" value="http://localhost:{{OCELOT_PORT}}/proxy/testhub" size="40" />
+        <button onclick="startConnection()">Connect</button>
+    </div>
+
+    <div id='log'></div>
+
+    <hr/>
+    <h1>Negative Test: Buffering</h1>
+    <p>Click below to test that non-SSE responses are still buffered by Ocelot (expecting ~2s delay).</p>
+    <button id='btn-negative' onclick='runNegativeTest()'>Run Negative Test (Buffering)</button>
+    <div id='negative-log'></div>
+
+    <script>
+        function logMessage(msg, className) {
+            const d = document.createElement('div');
+            d.textContent = new Date().toLocaleTimeString() + ' - ' + msg;
+            if (className) d.className = className;
+            document.getElementById('log').appendChild(d);
+            
+            const logContainer = document.getElementById('log');
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        function startConnection() {
+            const url = document.getElementById('hubUrl').value;
+            logMessage('Connecting to ' + url + ' via Server-Sent Events (SSE)...');
+            
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl(url, { transport: signalR.HttpTransportType.ServerSentEvents })
+                .build();
+                
+            connection.on('ReceiveMessage', msg => {
+                logMessage('Received: ' + msg, 'success');
+            });
+            
+            connection.start()
+                .then(() => logMessage('Connection started successfully!', 'success'))
+                .catch(err => logMessage('Error: ' + err.toString(), 'error'));
+        }
+
+        async function runNegativeTest() {
+            const url = 'http://localhost:{{OCELOT_PORT}}/proxy/not-sse';
+            const log = document.getElementById('negative-log');
+            log.innerHTML = 'Testing buffering (requesting ' + url + ')...<br>';
+            const start = Date.now();
+            try {
+                const response = await fetch(url);
+                const text = await response.text();
+                const end = Date.now();
+                const duration = end - start;
+                log.innerHTML += 'Received: "' + text + '"<br>';
+                log.innerHTML += 'Duration: ' + duration + 'ms<br>';
+                if (duration > 1800) {
+                    log.innerHTML += '<b class="success">PASSED: Response was buffered (delayed by downstream).</b>';
+                } else {
+                    log.innerHTML += '<b class="error">FAILED: Response was NOT buffered (arrived too fast).</b>';
+                }
+            } catch (err) {
+                log.innerHTML += '<b class="error">Error: ' + err.message + '</b>';
+            }
+        }
+    </script>
+</body>
+</html>
