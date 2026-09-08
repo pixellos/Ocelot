@@ -7,8 +7,10 @@ using Microsoft.Playwright;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
-namespace Ocelot.AcceptanceTests.ServerSentEvents;
+namespace Ocelot.Acceptance;
 
+[Trait("Feat", "941")] // https://github.com/ThreeMammals/Ocelot/issues/941
+[Trait("PR", "2383")] // https://github.com/ThreeMammals/Ocelot/pull/2383
 public class SSEBrowserTests : IAsyncLifetime
 {
     private WebApplication _downstreamApp;
@@ -54,14 +56,14 @@ public class SSEBrowserTests : IAsyncLifetime
         var ocelotConfig = new ConfigurationBuilder()
             .AddInMemoryCollection(new Dictionary<string, string>
             {
-                        { "Routes:0:DownstreamPathTemplate", "/{everything}" },
-                        { "Routes:0:DownstreamScheme", "http" },
-                        { "Routes:0:DownstreamHostAndPorts:0:Host", "localhost" },
-                        { "Routes:0:DownstreamHostAndPorts:0:Port", DownstreamPort.ToString() },
-                        { "Routes:0:UpstreamPathTemplate", "/proxy/{everything}" },
-                        { "Routes:0:UpstreamHttpMethod:0", "Get" },
-                        { "Routes:0:UpstreamHttpMethod:1", "Post" },
-                        { "Routes:0:UpstreamHttpMethod:2", "Options" },
+                { "Routes:0:DownstreamPathTemplate", "/{everything}" },
+                { "Routes:0:DownstreamScheme", "http" },
+                { "Routes:0:DownstreamHostAndPorts:0:Host", "localhost" },
+                { "Routes:0:DownstreamHostAndPorts:0:Port", DownstreamPort.ToString() },
+                { "Routes:0:UpstreamPathTemplate", "/proxy/{everything}" },
+                { "Routes:0:UpstreamHttpMethod:0", "Get" },
+                { "Routes:0:UpstreamHttpMethod:1", "Post" },
+                { "Routes:0:UpstreamHttpMethod:2", "Options" },
             })
             .Build();
 

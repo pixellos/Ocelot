@@ -9,7 +9,9 @@ using System.Diagnostics;
 
 namespace Ocelot.Acceptance;
 
-public class ServerSentEventsTests : Steps
+[Trait("Feat", "941")] // https://github.com/ThreeMammals/Ocelot/issues/941
+[Trait("PR", "2383")] // https://github.com/ThreeMammals/Ocelot/pull/2383
+public class SignalRServerSentEventsTests : Steps
 {
     private readonly List<string> _receivedEvents = [];
     private readonly Stopwatch _stopwatch = new();
@@ -25,12 +27,10 @@ public class ServerSentEventsTests : Steps
         this.Given(x => GivenThereIsAnSseServiceRunningOn(port, "/sse"))
             .And(x => GivenThereIsAConfiguration(configuration))
             .And(x => GivenOcelotIsRunningWithCompression())
-            .When(x => WhenIConnectToTheApiGatewaySseEndpointSync("/sse"))
+            .When(x => WhenIConnectToTheApiGatewaySseEndpoint("/sse"))
             .Then(x => ThenTheEventsAreReceivedInRealTime())
-            .BDDfy();
+        .BDDfy();
     }
-
-
 
     private void GivenThereIsAnSseServiceRunningOn(int port, string basePath)
     {
@@ -52,11 +52,6 @@ public class ServerSentEventsTests : Steps
         });
     }
 
-    private void WhenIConnectToTheApiGatewaySseEndpointSync(string url)
-    {
-        WhenIConnectToTheApiGatewaySseEndpoint(url).GetAwaiter().GetResult();
-    }
-
     private async Task WhenIConnectToTheApiGatewaySseEndpoint(string url)
     {
         _stopwatch.Start();
@@ -64,27 +59,24 @@ public class ServerSentEventsTests : Steps
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         response = await ocelotClient.SendAsync(request, System.Net.Http.HttpCompletionOption.ResponseHeadersRead);
 
-        System.IO.File.AppendAllText("test-debug.log", $"Response StatusCode: {response.StatusCode}\n");
-        System.IO.File.AppendAllText("test-debug.log", $"Response Content-Type: {response.Content.Headers.ContentType}\n");
+        File.AppendAllText("test-debug.log", $"Response StatusCode: {response.StatusCode}\n");
+        File.AppendAllText("test-debug.log", $"Response Content-Type: {response.Content.Headers.ContentType}\n");
 
         if (response.IsSuccessStatusCode)
         {
             using var stream = await response.Content.ReadAsStreamAsync();
-            using var reader = new System.IO.StreamReader(stream);
+            using var reader = new StreamReader(stream);
 
             while (true)
             {
                 var line = await reader.ReadLineAsync();
-                System.IO.File.AppendAllText("test-debug.log", $"Read line: '{line}'\n");
+                File.AppendAllText("test-debug.log", $"Read line: '{line}'\n");
                 if (line == null) break;
                 if (!string.IsNullOrEmpty(line))
                 {
                     _receivedEvents.Add(line);
-                    
                     if (_receivedEvents.Count == 1)
-                    {
                         _stopwatch.Stop();
-                    }
                 }
             }
         }
@@ -117,9 +109,9 @@ public class ServerSentEventsTests : Steps
         this.Given(x => GivenThereIsASignalRSseServiceRunningOn(port, "/signalr"))
             .And(x => GivenThereIsAConfiguration(configuration))
             .And(x => GivenOcelotIsRunning())
-            .When(x => WhenIConnectToTheApiGatewaySseEndpointSync("/signalr"))
+            .When(x => WhenIConnectToTheApiGatewaySseEndpoint("/signalr"))
             .Then(x => ThenTheSignalREventsAreReceivedInRealTime())
-            .BDDfy();
+        .BDDfy();
     }
 
     private void GivenThereIsASignalRSseServiceRunningOn(int port, string basePath)
@@ -169,20 +161,13 @@ public class ServerSentEventsTests : Steps
         var configuration = GivenConfiguration(route, routeGet);
 
         int ocelotPort = 0;
-        HubConnection connection = null;
-
         this.Given(x => GivenThereIsARealSignalRHubDownstream(downstreamPort))
             .And(x => GivenThereIsAConfiguration(configuration))
             .And(x => GivenOcelotIsRunningAndSetPort(out ocelotPort))
-            .When(x => WhenIConnectRealSignalRClientAndSetConnection(ocelotPort, "/hub", out connection))
+            .When(x => WhenIConnectRealSignalRClientAndSetConnection(ocelotPort, "/hub"))
             .Then(x => ThenTheRealSignalREventsAreReceivedInstantly())
-            .BDDfy();
-
-        if (connection != null)
-        {
-            await connection.StopAsync();
-            await connection.DisposeAsync();
-        }
+            .And(x => ThenIDisposeHubConnection())
+        .BDDfy();
     }
 
     private void GivenOcelotIsRunningAndSetPort(out int ocelotPort)
@@ -190,9 +175,18 @@ public class ServerSentEventsTests : Steps
         ocelotPort = GivenOcelotIsRunning();
     }
 
-    private void WhenIConnectRealSignalRClientAndSetConnection(int ocelotPort, string path, out HubConnection connection)
+    private HubConnection _connection;
+    private async Task WhenIConnectRealSignalRClientAndSetConnection(int ocelotPort, string path)
     {
-        connection = WhenIConnectRealSignalRClient(ocelotPort, path).GetAwaiter().GetResult();
+        _connection = await WhenIConnectRealSignalRClient(ocelotPort, path);
+    }
+    private async Task ThenIDisposeHubConnection()
+    {
+        if (_connection is null)
+            return;
+
+        await _connection.StopAsync(CancelMe);
+        await _connection.DisposeAsync();
     }
 
     private void GivenThereIsARealSignalRHubDownstream(int port)
