@@ -7,7 +7,7 @@ using Microsoft.Playwright;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
-namespace Ocelot.Acceptance;
+namespace Ocelot.Acceptance.ServerSentEvents;
 
 [Trait("Feat", "941")] // https://github.com/ThreeMammals/Ocelot/issues/941
 [Trait("PR", "2383")] // https://github.com/ThreeMammals/Ocelot/pull/2383
